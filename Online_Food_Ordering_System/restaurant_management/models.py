@@ -2,6 +2,8 @@ from django.db import models
 
 
 # Create your models here.
+from user_management.models import Customer
+
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=120)
@@ -25,3 +27,22 @@ class Item(models.Model):
     end_time = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=15)
     restaurant = models.ForeignKey(Restaurant, related_name='items', on_delete=models.CASCADE)
+
+
+class MealPlan(models.Model):
+    MEAL_PLAN_TYPE = (
+        ('custom', 'custom'),
+        ('default', 'Default')
+    )
+    description = models.CharField(max_length=120)
+    actual_price = models.FloatField(max_length=15)
+    final_price = models.FloatField(max_length=15)
+    type = models.DateTimeField(max_length=15,choices=MEAL_PLAN_TYPE, default='default')
+    status = models.CharField(max_length=15)
+    restaurant = models.ForeignKey(Restaurant, related_name='meal_plan', on_delete=models.CASCADE)
+
+class Order(models.Model):
+    status = models.CharField(max_length=120)
+    actual_price = models.FloatField(max_length=15)
+    customer = models.ForeignKey(Customer, related_name='custmer_item', on_delete=models.CASCADE)
+    mealplan = models.ForeignKey(MealPlan, related_name='mealplan_item', on_delete=models.CASCADE)

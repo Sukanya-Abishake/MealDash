@@ -21,8 +21,12 @@ from . import views_authentication
 urlpatterns = [
     path('api/authentication/restaurant/registration/', views_authentication.restaurant_register),
     path('api/authentication/restaurant/login/', views_authentication.restaurant_login),
-    path('api/core/restaurant/', views.RestaurantList.as_view()),
-    path('api/core/restaurant/<int:pk>/', views.RestaurantDetail.as_view()),
-    path('api/core/item/', views.ItemList.as_view()),
-    path('api/core/item/<int:pk>/', views.ItemDetail.as_view()),
+    path('api/core/getRestaurantList/', views.RestaurantList.as_view()),
+    path('api/core/getRestaurantDetail/<int:pk>/', views.RestaurantDetail.as_view()),
+    path('api/core/getItemList/', views.ItemList.as_view()),
+    path('api/core/getItemDetail/<int:pk>/', views.ItemDetail.as_view()),
+    path('api/core/getMealPlanList/', views.MealPlanList.as_view()),
+    path('api/core/getMealPlanDetail/<int:pk>/', views.MealPlanDetail.as_view()),
+    path('api/core/getOrderList/', views.OrderList.as_view()),
+    path('api/core/getOrderDetail/<int:pk>/', views.OrderDetail.as_view()),
 ]
