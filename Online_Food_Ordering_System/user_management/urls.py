@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main import views
+from user_management import views
+from user_management import views_authentication
 
 urlpatterns = [
-    path('api/core/product/', views.ProductList.as_view())  ,
-    path('api/core/product/<int:pk>/', views.ProductDetail.as_view())  ,
-    path('api/core/cartItems/', views.CartItemsList.as_view())  ,
-    path('api/core/cartItems/<int:pk>/', views.CartItemsDetail.as_view())  ,
+    path('api/authentication/customer/registration/', views_authentication.user_register)  ,
+    path('api/authentication/customer/login/', views_authentication.user_login)  ,
+    path('api/core/customer/', views.CustomerList.as_view())  ,
+    path('api/core/customer/<int:pk>/', views.CustomerDetail.as_view())  ,
+
 ]

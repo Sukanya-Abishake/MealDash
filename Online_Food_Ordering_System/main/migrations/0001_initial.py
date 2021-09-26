@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('accounts', '0002_customer_profile_img'),
+        ('user_management', '0002_customer_profile_img'),
     ]
 
     operations = [
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('ordered_date', models.DateField(auto_now=True, null=True)),
                 ('status', models.CharField(choices=[('Active', 'Active'), ('Delivered', 'Delivered')], default='Active', max_length=20)),
                 ('delivery_date', models.DateField(auto_now=True, null=True)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accounts.Customer')),
+                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user_management.Customer')),
                 ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.Product')),
             ],
             options={
