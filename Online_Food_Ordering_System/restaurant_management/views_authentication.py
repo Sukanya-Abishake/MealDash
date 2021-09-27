@@ -10,6 +10,7 @@ from .serializers import RestaurantSerializer
 
 @api_view(['POST'])
 def restaurant_register(request):
+    print('RegisterNotification')
     if request.method == 'POST':
         new_restaurant_data = JSONParser().parse(request)
         restaurant_email = new_restaurant_data['email']
@@ -30,9 +31,10 @@ def restaurant_register(request):
             return JsonResponse({'message': 'Check the registration details again!'}, status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def restaurant_login(request):
-    if request.method == 'GET':
+    print(request);
+    if request.method == 'POST':
         restaurant_data = JSONParser().parse(request)
         restaurant_email = restaurant_data['email']
         restaurant_password = restaurant_data['password']
@@ -44,7 +46,7 @@ def restaurant_login(request):
             restaurant = restaurant.filter(password__icontains=restaurant_password)
             if (len(restaurant) != 0):
                 serializer = RestaurantSerializer(restaurant, many=True)
-                return JsonResponse(serializer.data, safe=False)
+                return JsonResponse(serializer.data[0], safe=False)
             else:
                 return JsonResponse({'message': 'Check the login details again!'}, status=status.HTTP_204_NO_CONTENT)
         else:

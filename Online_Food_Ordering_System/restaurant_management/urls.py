@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from . import views_authentication
+from .views import RestaurantAPIView
 
 urlpatterns = [
     path('api/authentication/restaurant/registration/', views_authentication.restaurant_register),
@@ -29,4 +30,6 @@ urlpatterns = [
     path('api/core/getMealPlanDetail/<int:pk>/', views.MealPlanDetail.as_view()),
     path('api/core/getOrderList/', views.OrderList.as_view()),
     path('api/core/getOrderDetail/<int:pk>/', views.OrderDetail.as_view()),
+    path('api/restaurant/<int:restaurantId>/items/', RestaurantAPIView.as_view()),
+    path('api/restaurant/<int:restaurantId>/item', RestaurantAPIView.as_view())
 ]
