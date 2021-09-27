@@ -16,9 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include, re_path
+from rest_framework.documentation import include_docs_urls
+from rest_framework.renderers import OpenAPIRenderer
+from rest_framework.schemas import get_schema_view
+from rest_framework_swagger.views import get_swagger_view
 
-
+schema_view = get_swagger_view(title='MealDashAPI')
 urlpatterns = [
+    path('docs/', schema_view),
     path('admin/', admin.site.urls),
     re_path(r'^', include('user_management.urls')),
     re_path(r'^', include('restaurant_management.urls')),
