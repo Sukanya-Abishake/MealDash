@@ -12,7 +12,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ['id', 'description', 'price', 'start_time', 'end_time', 'status', 'restaurant']
+        fields = ['id', 'description', 'price', 'start_time', 'end_time', 'status']
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
