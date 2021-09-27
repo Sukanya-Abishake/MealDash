@@ -39,9 +39,12 @@ INSTALLED_APPS = [
     'corsheaders',
     'user_management',
     'restaurant_management',
-
+    'rest_framework_swagger'
 ]
-
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'}
+ROOT_URLCONF = 'Meal_Dash_System.urls'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,7 +67,6 @@ DATABASES = {
     }
 }
 
-ROOT_URLCONF = 'Meal_Dash_System.urls'
 
 TEMPLATES = [
     {
@@ -78,6 +80,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'staticfiles': 'django.templatetags.static',
+            }
         },
     },
 ]
