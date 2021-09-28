@@ -76,3 +76,31 @@ class RestaurantAPIView(APIView):
             #self.email_students(request, CourseDetailSerializer(saved_course).data, "NEW_COURSE")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MealPlanAPIView(APIView):
+    def get(self, request, restaurantId):
+        print('Restaurant:Id:', restaurantId)
+        try:
+            item_query_set = MealPlan.objects.filter(restaurant_id= restaurantId)
+            print('queryset', item_query_set)
+        except Item.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = MealPlanSerializer(item_query_set, many=True)
+        print('Serializer', serializer)
+        return Response(serializer.data)
+
+    def post(self, request,restaurantId):
+        serializer = MealPlanSerializer(data=request.data)
+        print('Restaurant:Id:', restaurantId)
+        if serializer.is_valid():
+            try:
+                restaurant_query_set = Restaurant.objects.get(id = restaurantId)
+            except Restaurant.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            if serializer.is_valid():
+                serializer.validated_data.__setitem__('restaurant', restaurant_query_set)
+            serializer.save()
+            #saved_course = Course.objects.get(courseId=serializer.data.get('courseId'))
+            #self.email_students(request, CourseDetailSerializer(saved_course).data, "NEW_COURSE")
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -22,5 +22,5 @@ class OrderSerializer(serializers.ModelSerializer):
 class MealPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = MealPlan
-        fields = ['id', 'description', 'actual_price', 'final_price', 'type', 'status', 'restaurant']
+        fields = ['id', 'description', 'actual_price', 'final_price', 'type', 'status']
 

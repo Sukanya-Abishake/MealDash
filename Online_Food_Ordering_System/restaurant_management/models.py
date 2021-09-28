@@ -31,13 +31,13 @@ class Item(models.Model):
 
 class MealPlan(models.Model):
     MEAL_PLAN_TYPE = (
-        ('custom', 'custom'),
+        ('custom', 'Custom'),
         ('default', 'Default')
     )
     description = models.CharField(max_length=120)
     actual_price = models.FloatField(max_length=15)
     final_price = models.FloatField(max_length=15)
-    type = models.DateTimeField(max_length=15,choices=MEAL_PLAN_TYPE, default='default')
+    type = models.CharField(max_length=15,choices=MEAL_PLAN_TYPE, default='default')
     status = models.CharField(max_length=15)
     restaurant = models.ForeignKey(Restaurant, related_name='meal_plan', on_delete=models.CASCADE)
 
