@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # Create your models here.
 from user_management.models import Customer
 
@@ -37,9 +36,16 @@ class MealPlan(models.Model):
     description = models.CharField(max_length=120)
     actual_price = models.FloatField(max_length=15)
     final_price = models.FloatField(max_length=15)
-    type = models.CharField(max_length=15,choices=MEAL_PLAN_TYPE, default='default')
+    type = models.CharField(max_length=15, choices=MEAL_PLAN_TYPE, default='default')
     status = models.CharField(max_length=15)
     restaurant = models.ForeignKey(Restaurant, related_name='meal_plan', on_delete=models.CASCADE)
+
+
+class MealPlanItem(models.Model):
+    mealPlan = models.ForeignKey(MealPlan, related_name='mealPlanItems', on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, related_name='mealPlanItems', on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
 
 class Order(models.Model):
     status = models.CharField(max_length=120)

@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 
 from .models import Restaurant, Order, MealPlan
 from .models import Item
-from .serializers import RestaurantSerializer, OrderSerializer, MealPlanSerializer
+from .serializers import RestaurantSerializer, OrderSerializer, MealPlanSerializer, MealPlanItemSerializer, \
+    MealPlanDetailSerializer
 from .serializers import ItemSerializer
 from rest_framework import generics, status
 
@@ -91,7 +92,6 @@ class MealPlanAPIView(APIView):
 
     def post(self, request,restaurantId):
         serializer = MealPlanSerializer(data=request.data)
-        print('Restaurant:Id:', restaurantId)
         if serializer.is_valid():
             try:
                 restaurant_query_set = Restaurant.objects.get(id = restaurantId)
@@ -100,7 +100,25 @@ class MealPlanAPIView(APIView):
             if serializer.is_valid():
                 serializer.validated_data.__setitem__('restaurant', restaurant_query_set)
             serializer.save()
+            try:
+                saved_meal_plan = MealPlan.objects.get(id=serializer.data['id'])
+            except MealPlan.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            for i in request.data['items']:
+                print('Item: ',i)
+                try:
+                    item = Item.objects.get(id=i['itemId'])
+                except Item.DoesNotExist:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+                to_save_meal_plan_item = MealPlanItemSerializer(data=i)
+                if to_save_meal_plan_item.is_valid():
+                    print('Valid-MealPlanItem')
+                    to_save_meal_plan_item.validated_data.__setitem__('mealPlan', saved_meal_plan)
+                    to_save_meal_plan_item.validated_data.__setitem__('item', item)
+                    to_save_meal_plan_item.save()
+                else:
+                    print('Not valid', to_save_meal_plan_item.errors)
             #saved_course = Course.objects.get(courseId=serializer.data.get('courseId'))
             #self.email_students(request, CourseDetailSerializer(saved_course).data, "NEW_COURSE")
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(MealPlanDetailSerializer(saved_meal_plan).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
