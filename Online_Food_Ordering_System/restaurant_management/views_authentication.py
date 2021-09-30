@@ -20,12 +20,12 @@ def restaurant_register(request):
             if len(restaurant) == 0:
                 if serializer.is_valid():
                     serializer.save()
-                    r = requests.post(
-                        'http://mealdash-bridge:7000/notification/user/' + request.data['email'],
-                        data={
-                            'type': 'REGISTRATION',
-                            'recipient': request.data['email']
-                        }, params=request.POST)
+                    # r = requests.post(
+                    #     'http://mealdash-bridge:7000/notification/user/' + request.data['email'],
+                    #     data={
+                    #         'type': 'REGISTRATION',
+                    #         'recipient': request.data['email']
+                    #     }, params=request.POST)
                     return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
                 print('Errors', serializer.errors)
                 return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
