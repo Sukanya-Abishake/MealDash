@@ -29,9 +29,9 @@ def user_register(request):
             return JsonResponse({'message': 'Check the registration details again!'}, status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def user_login(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
         customer_data = JSONParser().parse(request)
         customer_email = customer_data['email']
         customer_password = customer_data['password']
