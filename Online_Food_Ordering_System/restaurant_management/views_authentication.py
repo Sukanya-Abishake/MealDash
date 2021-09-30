@@ -21,7 +21,7 @@ def restaurant_register(request):
                 if serializer.is_valid():
                     serializer.save()
                     r = requests.post(
-                        'http://localhost:7000/notification/user/' + request.data['email'],
+                        'http://mealdash-bridge:7000/notification/user/' + request.data['email'],
                         data={
                             'type': 'REGISTRATION',
                             'recipient': request.data['email']
