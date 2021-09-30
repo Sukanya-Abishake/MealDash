@@ -1,2 +1,3 @@
 # MealDash
-Online Food Ordering System
+Meal Dash System
+Djanfo Rest API project
