@@ -33,5 +33,6 @@ urlpatterns = [
     path('api/restaurant/<int:restaurantId>/items/', RestaurantAPIView.as_view()),
     path('api/restaurant/<int:restaurantId>/item', RestaurantAPIView.as_view()),
     path('api/restaurant/<int:restaurantId>/mealplan', MealPlanAPIView.as_view()),
+    path('api/restaurant/<int:restaurantId>/mealplan/<int:mealPlanId>', MealPlanAPIView.as_view()),
     path('api/restaurant/<int:pk>', views.RestaurantDetail.as_view()),
 ]

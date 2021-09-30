@@ -91,6 +91,8 @@ class MealPlanAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request,restaurantId):
+        if request.data['type'] == 'custom':
+            request.data['status'] = 'PENDING'
         serializer = MealPlanSerializer(data=request.data)
         if serializer.is_valid():
             try:
@@ -122,3 +124,14 @@ class MealPlanAPIView(APIView):
             #self.email_students(request, CourseDetailSerializer(saved_course).data, "NEW_COURSE")
             return Response(MealPlanDetailSerializer(saved_meal_plan).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request,restaurantId, mealPlanId):
+        print("Patch", request.data)
+        try:
+            meal_plan = MealPlan.objects.get(id=mealPlanId)
+        except MealPlan.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        print('Valid-MealPlanItem')
+        meal_plan.status = request.data['status']
+        meal_plan.save()
+        return Response(MealPlanDetailSerializer(meal_plan).data, status=status.HTTP_201_CREATED)
