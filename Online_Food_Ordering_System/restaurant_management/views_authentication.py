@@ -6,24 +6,28 @@ from rest_framework.decorators import api_view
 import json
 from .models import Restaurant
 from .serializers import RestaurantSerializer
+import requests
 
 
 @api_view(['POST'])
 def restaurant_register(request):
-    print('RegisterNotification')
     if request.method == 'POST':
-        new_restaurant_data = JSONParser().parse(request)
-        restaurant_email = new_restaurant_data['email']
-        """restaurant_password = new_restaurant_data['password']"""
+        restaurant_email = request.data['email']
+        serializer = RestaurantSerializer(data=request.data)
         if restaurant_email is not None:
             restaurants = Restaurant.objects.all()
             restaurant = restaurants.filter(email__icontains=restaurant_email)
-            if (len(restaurant) == 0):
-                serializer = None
-                serializer = RestaurantSerializer(data=new_restaurant_data)
+            if len(restaurant) == 0:
                 if serializer.is_valid():
                     serializer.save()
+                    r = requests.post(
+                        'http://localhost:7000/notification/user/' + request.data['email'],
+                        data={
+                            'type': 'REGISTRATION',
+                            'recipient': request.data['email']
+                        }, params=request.POST)
                     return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+                print('Errors', serializer.errors)
                 return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return JsonResponse({'message': 'Restaurant already exists!'}, status=status.HTTP_204_NO_CONTENT)
